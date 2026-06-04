@@ -1,4 +1,4 @@
-package com.back.cadastroeestoque.model;
+package com.back.cadastroeestoque.Model;
 
 import jakarta.persistence.*;
 import lombok.*;

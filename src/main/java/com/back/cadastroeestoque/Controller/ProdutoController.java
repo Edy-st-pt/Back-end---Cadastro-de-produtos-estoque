@@ -3,6 +3,7 @@ package com.back.cadastroeestoque.Controller;
 import com.back.cadastroeestoque.Dto.ProdutoRequestDTO;
 import com.back.cadastroeestoque.Dto.ProdutoResponseDTO;
 import com.back.cadastroeestoque.Service.ProdutoService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,13 +30,13 @@ public class ProdutoController {
     }
 
     @PostMapping
-    public ResponseEntity<ProdutoResponseDTO> cadastrar(@RequestBody ProdutoRequestDTO dto) {
+    public ResponseEntity<ProdutoResponseDTO> cadastrar(@Valid @RequestBody ProdutoRequestDTO dto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(produtoService.cadastrar(dto));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ProdutoResponseDTO> atualizar(@PathVariable Long id,
-                                                        @RequestBody ProdutoRequestDTO dto) {
+                                                        @Valid @RequestBody ProdutoRequestDTO dto) {
         return ResponseEntity.ok(produtoService.atualizar(id, dto));
     }
 

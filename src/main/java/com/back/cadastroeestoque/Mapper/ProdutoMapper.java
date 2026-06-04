@@ -2,7 +2,7 @@ package com.back.cadastroeestoque.Mapper;
 
 import com.back.cadastroeestoque.Dto.ProdutoRequestDTO;
 import com.back.cadastroeestoque.Dto.ProdutoResponseDTO;
-import com.back.cadastroeestoque.model.Produto;
+import com.back.cadastroeestoque.Model.Produto;
 import org.springframework.stereotype.Component;
 
 @Component

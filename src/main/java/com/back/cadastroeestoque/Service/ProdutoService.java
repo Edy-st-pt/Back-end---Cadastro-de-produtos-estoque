@@ -2,8 +2,10 @@ package com.back.cadastroeestoque.Service;
 
 import com.back.cadastroeestoque.Dto.ProdutoRequestDTO;
 import com.back.cadastroeestoque.Dto.ProdutoResponseDTO;
+import com.back.cadastroeestoque.Exception.ProdutoDuplicadoException;
+import com.back.cadastroeestoque.Exception.ProdutoNotFoundException;
 import com.back.cadastroeestoque.Mapper.ProdutoMapper;
-import com.back.cadastroeestoque.model.Produto;
+import com.back.cadastroeestoque.Model.Produto;
 import com.back.cadastroeestoque.Repository.ProdutoRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,10 +35,7 @@ public class ProdutoService {
     public ProdutoResponseDTO buscarPorId(Long id) {
         log.info("Buscando produto com id: {}", id);
         Produto produto = produtoRepository.findById(id)
-                .orElseThrow(() -> {
-                    log.warn("Produto não encontrado com id: {}", id);
-                    return new RuntimeException("Produto não encontrado com id: " + id);
-                });
+                .orElseThrow(() -> new ProdutoNotFoundException(id));
         return produtoMapper.toResponse(produto);
     }
 
@@ -45,8 +44,7 @@ public class ProdutoService {
         log.info("Cadastrando novo produto: {}", dto.nome());
 
         if (produtoRepository.existsByNomeIgnoreCase(dto.nome())) {
-            log.warn("Já existe um produto cadastrado com o nome: {}", dto.nome());
-            throw new RuntimeException("Já existe um produto com o nome: " + dto.nome());
+            throw new ProdutoDuplicadoException(dto.nome());
         }
 
         Produto produto = produtoMapper.toEntity(dto);
@@ -60,10 +58,7 @@ public class ProdutoService {
         log.info("Atualizando produto com id: {}", id);
 
         Produto produto = produtoRepository.findById(id)
-                .orElseThrow(() -> {
-                    log.warn("Produto não encontrado para atualização. ID: {}", id);
-                    return new RuntimeException("Produto não encontrado com id: " + id);
-                });
+                .orElseThrow(() -> new ProdutoNotFoundException(id));
 
         produtoMapper.updateFromDTO(dto, produto);
         Produto atualizado = produtoRepository.save(produto);
@@ -76,8 +71,7 @@ public class ProdutoService {
         log.info("Removendo produto com id: {}", id);
 
         if (!produtoRepository.existsById(id)) {
-            log.warn("Produto não encontrado para remoção. ID: {}", id);
-            throw new RuntimeException("Produto não encontrado com id: " + id);
+            throw new ProdutoNotFoundException(id);
         }
 
         produtoRepository.deleteById(id);

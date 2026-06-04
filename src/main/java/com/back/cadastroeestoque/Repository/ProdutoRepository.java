@@ -1,6 +1,6 @@
 package com.back.cadastroeestoque.Repository;
 
-import com.back.cadastroeestoque.model.Produto;
+import com.back.cadastroeestoque.Model.Produto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
